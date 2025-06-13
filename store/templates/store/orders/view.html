@@ -1,0 +1,250 @@
+{% extends 'store/layouts/main.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+  :root {
+    --primary: #6c63ff;
+    --primary-light: #8b85ff;
+    --secondary-bg: #f9f9fb;
+    --text-dark: #2d3748;
+    --text-medium: #4a5568;
+    --text-light: #718096;
+    --accent: #ff6b6b;
+    --shadow-sm: 0 2px 6px rgba(108, 99, 255, 0.15);
+    --shadow-md: 0 6px 20px rgba(108, 99, 255, 0.2);
+    --border-radius: 12px;
+    --transition: all 0.3s ease;
+  }
+
+  /* Breadcrumb container */
+  .breadcrumb-container {
+    background: var(--primary);
+    padding: 1rem 0.5rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow-md);
+  }
+  .breadcrumb-container a {
+    color: #fff;
+    font-weight: 600;
+    text-decoration: none;
+    margin-right: 0.5rem;
+    transition: var(--transition);
+  }
+  .breadcrumb-container a:hover {
+    text-decoration: underline;
+    color: var(--accent);
+  }
+  .breadcrumb-container span.separator {
+    color: rgba(255, 255, 255, 0.7);
+    margin-right: 0.5rem;
+  }
+
+  /* Card */
+  .order-card {
+    background: var(--secondary-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+    padding: 2rem;
+  }
+
+  .order-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+  .order-card-header h3 {
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 1.8rem;
+  }
+  .btn-back {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 0.5rem 1.2rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    box-shadow: var(--shadow-sm);
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    text-decoration: none;
+  }
+  .btn-back:hover {
+    background: #ff4a4a;
+    box-shadow: var(--shadow-md);
+    color: white;
+  }
+  .btn-back i {
+    font-size: 1.1rem;
+  }
+
+  /* Section headers */
+  h4 {
+    color: var(--primary);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  hr {
+    border: none;
+    height: 2px;
+    background: var(--primary-light);
+    border-radius: 5px;
+    margin-bottom: 1rem;
+  }
+
+  /* Shipping and order details blocks */
+  .details-block {
+    background: white;
+    padding: 1rem 1.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 1.5rem;
+  }
+  .details-block label {
+    display: block;
+    font-weight: 600;
+    color: var(--text-medium);
+    margin-top: 0.8rem;
+  }
+  .details-block .detail-value {
+    background: var(--secondary-bg);
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    margin-top: 0.2rem;
+    color: var(--text-dark);
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+  }
+
+  /* Order summary paragraphs */
+  .order-summary p {
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 0.6rem;
+  }
+  .order-summary strong {
+    color: var(--primary);
+  }
+
+  /* Items table */
+  table.order-items-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 12px;
+    margin-top: 1rem;
+  }
+  table.order-items-table thead th {
+    text-align: left;
+    padding: 0.75rem 1rem;
+    color: var(--text-medium);
+    font-weight: 700;
+  }
+  table.order-items-table tbody tr {
+    background: white;
+    box-shadow: var(--shadow-sm);
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+  }
+  table.order-items-table tbody tr:hover {
+    box-shadow: var(--shadow-md);
+  }
+  table.order-items-table tbody td {
+    padding: 1rem;
+    vertical-align: middle;
+    color: var(--text-dark);
+    border-bottom: none;
+  }
+  table.order-items-table img {
+    border-radius: 8px;
+    object-fit: cover;
+  }
+</style>
+
+<div class="container">
+  <div class="breadcrumb-container">
+    <a href="{% url 'home' %}">Home</a>
+    <span class="separator">/</span>
+    <a href="{% url 'myorders' %}">My Orders</a>
+    <span class="separator">/</span>
+    <span>Order Details</span>
+  </div>
+
+  <div class="order-card">
+    <div class="order-card-header">
+      <h3>Order Details</h3>
+      <a href="{% url 'myorders' %}" class="btn-back">
+        <i class="fa fa-reply"></i> Back
+      </a>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="details-block">
+          <h4>Shipping Details</h4>
+          <hr>
+          <label>First Name</label>
+          <div class="detail-value">{{ order.fname }}</div>
+
+          <label>Last Name</label>
+          <div class="detail-value">{{ order.lname }}</div>
+
+          <label>Email</label>
+          <div class="detail-value">{{ order.email }}</div>
+
+          <label>Phone</label>
+          <div class="detail-value">{{ order.phone }}</div>
+
+          <label>Address</label>
+          <div class="detail-value">
+            {{ order.address }}, {{ order.city }}<br>
+            {{ order.state }}, {{ order.country }} - {{ order.pincode }}
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="details-block order-summary">
+          <h4>Order Details</h4>
+          <hr>
+          <p><strong>Tracking No:</strong> {{ order.tracking_no }}</p>
+          <p><strong>Order Status:</strong> {{ order.status|title }}</p>
+          <p><strong>Order Date:</strong> {{ order.created_at|date:"M d, Y" }}</p>
+          <p><strong>Total Price:</strong> ${{ order.total_price }}</p>
+          <p><strong>Payment Method:</strong> {{ order.payment_mode }}</p>
+        </div>
+      </div>
+    </div>
+
+    <h5 class="mt-4" style="color: var(--primary); font-weight: 700;">Items</h5>
+    <table class="order-items-table">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Quantity</th>
+          <th>Price</th>
+          <th>Image</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in orderitems %}
+        <tr>
+          <td>{{ item.product.name }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>${{ item.price }}</td>
+          <td>
+            <img src="{{ item.product.product_image.url }}" width="60" height="60" alt="{{ item.product.name }}">
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock content %}

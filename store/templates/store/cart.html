@@ -1,0 +1,195 @@
+{% extends 'store/layouts/main.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+  :root {
+    --primary: #6c63ff;
+    --primary-light: #8b85ff;
+    --secondary-bg: #f9f9fb;
+    --text-dark: #2d3748;
+    --text-medium: #4a5568;
+    --text-light: #718096;
+    --accent: #ff6b6b;
+    --shadow-sm: 0 2px 6px rgba(108, 99, 255, 0.15);
+    --shadow-md: 0 6px 20px rgba(108, 99, 255, 0.2);
+    --border-radius: 12px;
+    --transition: all 0.3s ease;
+  }
+
+  .breadcrumb-fullbar {
+    width: 100%;
+    background: var(--primary);
+    padding: 1rem 0;
+    box-shadow: var(--shadow-md);
+  }
+
+  .breadcrumb-container {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  .breadcrumb-container a {
+    color: #fff;
+    font-weight: 600;
+    text-decoration: none;
+    margin-right: 0.5rem;
+    transition: var(--transition);
+  }
+
+  .breadcrumb-container a:hover {
+    color: var(--accent);
+  }
+
+  .cart-card {
+    background: var(--secondary-bg);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .product_row {
+    background: white;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+  }
+
+  .product_row:hover {
+    box-shadow: var(--shadow-md);
+  }
+
+  .product_row img {
+    border-radius: 8px;
+    object-fit: cover;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .qty-label {
+    font-weight: 600;
+    color: var(--text-medium);
+  }
+
+  .qty-group {
+    width: 130px;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+
+  .qty-group button {
+    background: var(--primary-light);
+    border: none;
+    padding: 0.3rem 0.8rem;
+    border-radius: 6px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+
+  .qty-group button:hover {
+    background: var(--primary);
+  }
+
+  .qty-input {
+    width: 40px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+
+  .btn-remove {
+    background: var(--accent);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    transition: var(--transition);
+  }
+
+  .btn-remove:hover {
+    background: #ff4a4a;
+  }
+
+  .checkout-btn {
+    margin-top: 1.5rem;
+    background: var(--primary);
+    color: white;
+    padding: 0.6rem 1.5rem;
+    border-radius: 10px;
+    font-weight: 600;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+    text-decoration: none;
+  }
+
+  .checkout-btn:hover {
+    background: var(--primary-light);
+    box-shadow: var(--shadow-md);
+  }
+
+  .out-of-stock-msg {
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+</style>
+
+<!-- Full-width breadcrumb bar -->
+<div class="breadcrumb-fullbar">
+  <div class="breadcrumb-container">
+    <a href="{% url 'home' %}">Home</a> /
+    <a href="{% url 'cart' %}">Cart</a>
+  </div>
+</div>
+
+<!-- Cart section inside container -->
+<div class="container my-4">
+  <div class="cart-card">
+    {% if cart %}
+      {% for item in cart %}
+      <div class="row product_row product_data">
+        <div class="col-md-2 my-auto">
+          <img src="{{ item.product.product_image.url }}" height="70" width="70" alt="{{ item.product.name }}">
+        </div>
+        <div class="col-md-3 my-auto">
+          <h6>{{ item.product.name }}</h6>
+        </div>
+        <div class="col-md-2 my-auto">
+          <h6>$ {{ item.product.selling_price | stringformat:'d' }}</h6>
+        </div>
+        <div class="col-md-3 my-auto">
+          <input type="hidden" class="prod_id" value="{{ item.product_id }}">
+          <input type="hidden" class="max_qty" value="{{ item.product.quantity }}">
+          {% csrf_token %}
+          {% if item.product.quantity > 0 %}
+            <label class="qty-label">Quantity</label>
+            <div class="qty-group">
+              <button class="decrement-btn changeQuantity">−</button>
+              <input type="text" name="quantity" class="qty-input" value="{{ item.product_qty }}" readonly>
+              <button class="increment-btn changeQuantity">+</button>
+            </div>
+            <div class="out-of-stock-msg text-danger" style="display: none">Out of Stock</div>
+          {% else %}
+            <h6 class="text-danger">Out of Stock</h6>
+          {% endif %}
+        </div>
+        <div class="col-md-2 my-auto">
+          <button class="btn-remove delete-cart-item">
+            <i class="fa fa-trash"></i> Remove
+          </button>
+        </div>
+      </div>
+      {% endfor %}
+      <a href="{% url 'checkout' %}" class="checkout-btn float-end">Proceed to Checkout</a>
+    {% else %}
+      <h4>Your cart is empty!</h4>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock content %}

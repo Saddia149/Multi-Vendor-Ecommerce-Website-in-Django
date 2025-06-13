@@ -1,0 +1,172 @@
+{% extends 'store/layouts/main.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+  :root {
+    --primary: #6c63ff;
+    --primary-light: #8b85ff;
+    --secondary-bg: #f9f9fb;
+    --text-dark: #2d3748;
+    --text-medium: #4a5568;
+    --text-light: #718096;
+    --accent: #ff6b6b;
+    --shadow-sm: 0 2px 6px rgba(108, 99, 255, 0.15);
+    --shadow-md: 0 6px 20px rgba(108, 99, 255, 0.2);
+    --border-radius: 12px;
+    --transition: all 0.3s ease;
+  }
+
+  /* Breadcrumb container */
+  .breadcrumb-container {
+    background: var(--primary);
+    padding: 1rem 0.5rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow-md);
+    width: 100vw;
+    margin-left: calc(-1 * ((100vw - 100%) / 2));
+    padding-left: max(1rem, calc((100vw - 1140px) / 2));
+    padding-right: max(1rem, calc((100vw - 1140px) / 2));
+  }
+  .breadcrumb-container a {
+    color: #fff;
+    font-weight: 600;
+    text-decoration: none;
+    margin-right: 0.5rem;
+    transition: var(--transition);
+  }
+  .breadcrumb-container a:hover {
+    text-decoration: underline;
+    color: var(--accent);
+  }
+  .breadcrumb-container span.separator {
+    color: rgba(255, 255, 255, 0.7);
+    margin-right: 0.5rem;
+  }
+
+  /* Card style */
+  .orders-card {
+    background: var(--secondary-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+    padding: 1.5rem;
+  }
+
+  .orders-card-header {
+    border-bottom: none;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+    font-size: 1.8rem;
+    color: var(--primary);
+  }
+
+  /* Table styling */
+  table.orders-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 12px;
+  }
+
+  table.orders-table thead tr th {
+    background: transparent;
+    color: var(--text-medium);
+    font-weight: 600;
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: none;
+  }
+
+  table.orders-table tbody tr {
+    background: #fff;
+    box-shadow: var(--shadow-sm);
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+  }
+  table.orders-table tbody tr:hover {
+    box-shadow: var(--shadow-md);
+  }
+
+  table.orders-table tbody tr td {
+    padding: 1rem;
+    vertical-align: middle;
+    color: var(--text-dark);
+    border-bottom: none;
+  }
+
+  /* Button styling */
+  .btn-view {
+    background: var(--primary);
+    border: none;
+    color: white;
+    padding: 0.4rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    box-shadow: var(--shadow-sm);
+    cursor: pointer;
+    transition: var(--transition);
+  }
+  .btn-view:hover {
+    background: var(--primary-light);
+    box-shadow: var(--shadow-md);
+  }
+
+  /* Empty state */
+  .empty-orders {
+    text-align: center;
+    color: var(--text-medium);
+    padding: 3rem 1rem;
+    font-size: 1.2rem;
+    font-style: italic;
+  }
+</style>
+
+<div class="container-fluid px-0">
+  <div class="breadcrumb-container d-flex align-items-center animate__animated animate__fadeInDown">
+    <a href="{% url 'home' %}">Home</a>
+    <span class="separator">/</span>
+    <a href="{% url 'myorders' %}">My Orders</a>
+  </div>
+</div>
+
+<div class="container">
+  <div class="orders-card animate__animated animate__fadeInUp">
+    <div class="orders-card-header">My Orders</div>
+
+    {% if orders %}
+    <table class="orders-table">
+      <thead>
+        <tr>
+          <th>Order Date</th>
+          <th>Tracking Number</th>
+          <th>Total Price</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in orders %}
+        <tr>
+          <td>{{ item.created_at|date:"M d, Y" }}</td>
+          <td>{{ item.tracking_no }}</td>
+          <td>${{ item.total_price }}</td>
+          <td>{{ item.status|title }}</td>
+          <td>
+            <a class="btn-view" href="{% url 'orderview' item.tracking_no %}">View</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="empty-orders">
+      You have no orders yet.
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+{% endblock content %}

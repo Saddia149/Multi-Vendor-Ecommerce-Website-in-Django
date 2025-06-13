@@ -1,0 +1,386 @@
+{% extends 'store/layouts/main.html' %}
+
+{% block content %}
+<style>
+  :root {
+    --primary: #6c63ff;
+    --primary-light: #a5a1ff;
+    --secondary: #f8f9fe;
+    --text: #2d3748;
+    --text-light: #718096;
+    --border: #e2e8f0;
+    --error: #fc8181;
+    --success: #68d391;
+  }
+
+  .add-product-container {
+    max-width: 900px;
+    margin: 3rem auto;
+    padding: 3rem;
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 10px 50px rgba(108, 99, 255, 0.08);
+    border: 1px solid var(--border);
+  }
+
+  .form-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .form-header h2 {
+    color: var(--primary);
+    font-weight: 800;
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
+    background: linear-gradient(90deg, var(--primary), var(--primary-light));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .form-header p {
+    color: var(--text-light);
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.75rem;
+    position: relative;
+  }
+
+  .form-group.full-width {
+    grid-column: span 2;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+    color: var(--text);
+    font-size: 0.95rem;
+  }
+
+  .input-field {
+    position: relative;
+  }
+
+  input[type="text"],
+  input[type="number"],
+  textarea,
+  select {
+    width: 100%;
+    padding: 1rem 1.25rem;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background-color: var(--secondary);
+  }
+
+  textarea {
+    min-height: 120px;
+    resize: vertical;
+  }
+
+  input[type="file"] {
+    width: 100%;
+    padding: 1rem;
+    border: 2px dashed var(--border);
+    border-radius: 12px;
+    background-color: var(--secondary);
+  }
+
+  input:focus,
+  textarea:focus,
+  select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(108, 99, 255, 0.1);
+    outline: none;
+    background-color: white;
+  }
+
+  .form-check {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: var(--secondary);
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    margin-top: 1rem;
+  }
+
+  .form-check-input {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+  }
+
+  .form-check-input:checked {
+    background-color: var(--primary);
+    border-color: var(--primary);
+  }
+
+  .form-check-input:checked::after {
+    content: "✓";
+    position: absolute;
+    color: white;
+    font-size: 14px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .btn-submit {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 1.25rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    width: 100%;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-top: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  .btn-submit:hover {
+    background-color: #5a52e0;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(108, 99, 255, 0.2);
+  }
+
+  .alert-danger {
+    background-color: #fff5f5;
+    border: 2px solid var(--error);
+    color: #e53e3e;
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 2.5rem;
+    grid-column: span 2;
+  }
+
+  .alert-danger strong {
+    display: block;
+    margin-bottom: 0.75rem;
+    font-size: 1.1rem;
+  }
+
+  .alert-danger ul {
+    margin: 0.5rem 0 0 1.5rem;
+    padding: 0;
+    list-style-type: disc;
+  }
+
+  .input-hint {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    margin-top: 0.5rem;
+    display: block;
+  }
+
+  @media (max-width: 768px) {
+    .add-product-container {
+      padding: 1.75rem;
+      margin: 1.5rem;
+    }
+
+    .form-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .form-group.full-width {
+      grid-column: span 1;
+    }
+
+    .alert-danger {
+      grid-column: span 1;
+    }
+  }
+</style>
+
+<div class="add-product-container">
+  <div class="form-header">
+    <h2>Create New Product</h2>
+    <p>Showcase your product with rich details to attract more customers and boost sales</p>
+  </div>
+
+  {% if form.errors %}
+    <div class="alert-danger">
+      <strong>⚠️ Submission Error</strong>
+      <ul>
+        {% for field, error in form.errors.items %}
+          <li><strong>{{ field|title }}:</strong> {{ error|striptags }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+
+  <form method="POST" enctype="multipart/form-data" class="product-form">
+    {% csrf_token %}
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="id_name">Product Name</label>
+        <div class="input-field">
+          {{ form.name }}
+        </div>
+        <span class="input-hint">Keep it descriptive but concise (3-5 words)</span>
+      </div>
+      
+      <div class="form-group">
+        <label for="id_slug">URL Slug</label>
+        <div class="input-field">
+          {{ form.slug }}
+        </div>
+        <span class="input-hint">Will be auto-generated if left blank</span>
+      </div>
+
+      <div class="form-group full-width">
+        <label for="id_category">Product Category</label>
+        {{ form.category }}
+      </div>
+
+      <div class="form-group full-width">
+        <label for="id_product_image">Product Image</label>
+        {{ form.product_image }}
+        <span class="input-hint">Recommended size: 800x800px, JPG/PNG format</span>
+      </div>
+
+      <div class="form-group full-width">
+        <label for="id_small_description">Short Description</label>
+        {{ form.small_description }}
+        <span class="input-hint">Appears in product cards (max 150 characters)</span>
+      </div>
+
+      <div class="form-group">
+        <label for="id_quantity">Stock Quantity</label>
+        <div class="input-field">
+          {{ form.quantity }}
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="id_tag">Product Tags</label>
+        <div class="input-field">
+          {{ form.tag }}
+        </div>
+        <span class="input-hint">Separate tags with commas</span>
+      </div>
+
+      <div class="form-group full-width">
+        <label for="id_description">Full Description</label>
+        {{ form.description }}
+        <span class="input-hint">Tell customers about features, benefits, and specifications</span>
+      </div>
+
+      <div class="form-group">
+        <label for="id_original_price">Original Price ($)</label>
+        <div class="input-field">
+          {{ form.original_price }}
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="id_selling_price">Selling Price ($)</label>
+        <div class="input-field">
+          {{ form.selling_price }}
+        </div>
+      </div>
+
+      <div class="form-group full-width">
+        <div class="form-check">
+          {{ form.trending }}
+          <label class="form-check-label" for="id_trending">Feature this product in Trending section</label>
+        </div>
+      </div>
+
+      <div class="form-group full-width">
+        <label for="id_meta_title">SEO Meta Title</label>
+        <div class="input-field">
+          {{ form.meta_title }}
+        </div>
+        <span class="input-hint">Optimize for search engines (50-60 characters)</span>
+      </div>
+
+      <div class="form-group">
+        <label for="id_meta_keywords">SEO Keywords</label>
+        <div class="input-field">
+          {{ form.meta_keywords }}
+        </div>
+        <span class="input-hint">Comma-separated keywords</span>
+      </div>
+      
+      <div class="form-group">
+        <label for="id_meta_description">SEO Description</label>
+        <div class="input-field">
+          {{ form.meta_description }}
+        </div>
+        <span class="input-hint">Brief summary for search results (150-160 chars)</span>
+      </div>
+    </div>
+
+    <button type="submit" class="btn-submit">
+      <i class="fas fa-plus-circle"></i> Publish Product
+    </button>
+  </form>
+</div>
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<!-- Enhanced Slug Generation -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const nameField = document.getElementById('id_name');
+    const slugField = document.getElementById('id_slug');
+    
+    // Auto-generate slug when name changes
+    nameField.addEventListener('input', function() {
+      if (!slugField.value || slugField.dataset.manuallyEdited !== 'true') {
+        slugField.value = this.value
+          .toLowerCase()
+          .replace(/[^\w\s-]/g, '')
+          .replace(/[\s_-]+/g, '-')
+          .replace(/^-+|-+$/g, '');
+      }
+    });
+    
+    // Mark slug as manually edited when user changes it
+    slugField.addEventListener('change', function() {
+      this.dataset.manuallyEdited = 'true';
+    });
+    
+    // Improve file input display
+    const fileInput = document.querySelector('input[type="file"]');
+    if (fileInput) {
+      fileInput.addEventListener('change', function(e) {
+        const fileName = e.target.files[0]?.name || 'No file selected';
+        const label = this.nextElementSibling;
+        if (label && label.classList.contains('file-label')) {
+          label.textContent = fileName;
+        }
+      });
+    }
+  });
+</script>
+{% endblock content %}
