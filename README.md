@@ -94,8 +94,7 @@ E-Shop is a full-featured e-commerce platform built with Django. It supports bot
 * Embedded Tawk.to live chat widget
 
 ## ScreenShots
-### Home Page
-![Alt Text](imgs/127.0.0.1_8000_(1)-Copy.png)
+
 ### Regiter Page
 ![Alt Text](imgs/127.0.0.1_8000_register_.png)
 ### Seller Dashboard
