@@ -101,10 +101,6 @@ E-Shop is a full-featured e-commerce platform built with Django. It supports bot
 ![Alt Text](imgs/127.0.0.1_8000_seller-dashboard_.png)
 ### Seller Home(Before Approval)
 ![Alt Text](imgs/127.0.0.1_8000_seller-home_.png)
-### Seller Home(After Approval)
-![Alt Text](imgs/127.0.0.1_8000_seller-home_ (1).png)
-### Add Product for Seller
-![Alt Text](imgs/127.0.0.1_8000_add-product_png)
 ### Seller Orders
 ![Alt Text](imgs/127.0.0.1_8000_seller-orders_.png)
 ### Collection on Buyer Side
