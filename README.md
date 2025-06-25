@@ -128,7 +128,7 @@ Any many more.
        pip install WeasyPrint
 
 ### Migrate:
-       python manage.py migrate4
+       python manage.py migrate
 
 ### SuperUser:
        python manage.py createsuperuser
