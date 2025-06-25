@@ -42,7 +42,7 @@ class ProductForm(forms.ModelForm):
             'meta_title', 'meta_keywords', 'meta_description'
         ]
         widgets = {
-            'seller': forms.HiddenInput(),  # ✅ Assign seller automatically
+            'seller': forms.HiddenInput(), 
             'tags': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter product tags'}),
             'trending': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'status': forms.CheckboxInput(attrs={'class': 'form-check-input'}),

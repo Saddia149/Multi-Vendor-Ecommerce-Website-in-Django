@@ -1,0 +1,55 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+      .logo i{
+        color: #FF9800;
+      }
+      .logo h1{
+        color:#4F46E5;
+        font-weight: 800;
+        font-size: 2rem;
+      }
+    </style>
+
+</head>
+<body>
+  <nav class="sidebar" id="sidebar">
+  <div class="logo">
+    <h1><i class="fa-solid fa-store"></i> MYSHOP</h1>
+    <p>Admin Dashboard</p>
+  </div>
+  <ul class="nav-menu">
+    <li class="nav-item">
+      <a
+        href="{% url 'admin_dashboard' %}"
+        class="nav-link {% if request.path == '/adminpanel/dashboard/' %}active{% endif %}"
+      >
+        <span class="nav-icon">📊</span> Dashboard
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="{% url 'admin_profile' %}" class="nav-link">
+        <span class="nav-icon">👤</span> Profile
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="{% url 'admin_logout' %}" class="nav-link">
+        <span class="nav-icon">🚪</span> Logout
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="{% url 'manage_sellers' %}" class="nav-link">
+        <span class="nav-icon">🧾</span> Approve Sellers
+      </a>
+    </li>
+  </ul>
+</nav>
+</body>
+</html>
+

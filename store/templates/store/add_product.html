@@ -2,47 +2,60 @@
 
 {% block content %}
 <style>
-  :root {
-    --primary: #6c63ff;
-    --primary-light: #a5a1ff;
-    --secondary: #f8f9fe;
-    --text: #2d3748;
-    --text-light: #718096;
-    --border: #e2e8f0;
-    --error: #fc8181;
-    --success: #68d391;
-  }
-
   .add-product-container {
-    max-width: 900px;
+    max-width: 1000px;
     margin: 3rem auto;
     padding: 3rem;
     background: white;
-    border-radius: 24px;
-    box-shadow: 0 10px 50px rgba(108, 99, 255, 0.08);
-    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e2e8f0;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .add-product-container:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
   }
 
   .form-header {
     text-align: center;
     margin-bottom: 3rem;
+    position: relative;
   }
 
   .form-header h2 {
-    color: var(--primary);
+    color: #6c63ff;
     font-weight: 800;
-    font-size: 2rem;
+    font-size: 2.25rem;
     margin-bottom: 0.75rem;
-    background: linear-gradient(90deg, var(--primary), var(--primary-light));
+    position: relative;
+    display: inline-block;
+    background: linear-gradient(90deg, #6c63ff, #8b85ff);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 
+  .form-header h2::after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, #6c63ff, #8b85ff);
+    border-radius: 2px;
+  }
+
   .form-header p {
-    color: var(--text-light);
+    color: #718096;
     font-size: 1.1rem;
     max-width: 600px;
-    margin: 0 auto;
+    margin: 1rem auto 0;
     line-height: 1.6;
   }
 
@@ -65,8 +78,16 @@
     display: block;
     margin-bottom: 0.75rem;
     font-weight: 600;
-    color: var(--text);
+    color: #2d3748;
     font-size: 0.95rem;
+    position: relative;
+  }
+
+  label.required::after {
+    content: "*";
+    color: #dc3545;
+    margin-left: 4px;
+    font-size: 1.1em;
   }
 
   .input-field {
@@ -78,32 +99,100 @@
   textarea,
   select {
     width: 100%;
-    padding: 1rem 1.25rem;
-    border: 2px solid var(--border);
+    padding: 1rem 1.5rem;
+    border: 2px solid #e2e8f0;
     border-radius: 12px;
     font-size: 1rem;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    background-color: var(--secondary);
+    background-color: #f8f9fa;
+    font-family: inherit;
+    color: #2d3748;
   }
 
   textarea {
-    min-height: 120px;
+    min-height: 140px;
     resize: vertical;
+    line-height: 1.6;
+    padding: 1.25rem;
   }
 
-  input[type="file"] {
-    width: 100%;
-    padding: 1rem;
-    border: 2px dashed var(--border);
+  .file-upload-wrapper {
+    position: relative;
+    margin-bottom: 1.5rem;
+  }
+
+  .file-upload-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem;
+    border: 2px dashed #e2e8f0;
     border-radius: 12px;
-    background-color: var(--secondary);
+    background-color: #f8f9fa;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-align: center;
+  }
+
+  .file-upload-label:hover {
+    border-color: #8b85ff;
+    background-color: rgba(108, 99, 255, 0.05);
+    transform: translateY(-2px);
+  }
+
+  .file-upload-label i {
+    font-size: 2.5rem;
+    color: #6c63ff;
+    margin-bottom: 1rem;
+  }
+
+  .file-upload-label span {
+    color: #718096;
+    font-size: 1rem;
+  }
+
+  .file-upload-label .file-name {
+    margin-top: 1rem;
+    color: #564fd1;
+    font-weight: 600;
+    font-size: 0.9rem;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  #id_product_image {
+    display: none;
+  }
+
+  .preview-container {
+    display: none;
+    margin-top: 1.5rem;
+    text-align: center;
+    animation: fadeIn 0.5s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .image-preview {
+    max-width: 250px;
+    max-height: 250px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    object-fit: contain;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
   }
 
   input:focus,
   textarea:focus,
   select:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 4px rgba(108, 99, 255, 0.1);
+    border-color: #6c63ff;
+    box-shadow: 0 0 0 4px rgba(108, 99, 255, 0.15);
     outline: none;
     background-color: white;
   }
@@ -112,10 +201,17 @@
     display: flex;
     align-items: center;
     gap: 1rem;
-    background: var(--secondary);
-    padding: 1rem 1.5rem;
+    background: #f8f9fa;
+    padding: 1.25rem;
     border-radius: 12px;
     margin-top: 1rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 2px solid #e2e8f0;
+  }
+
+  .form-check:hover {
+    border-color: #8b85ff;
+    transform: translateY(-2px);
   }
 
   .form-check-input {
@@ -123,16 +219,17 @@
     appearance: none;
     width: 22px;
     height: 22px;
-    border: 2px solid var(--border);
+    border: 2px solid #e2e8f0;
     border-radius: 6px;
     cursor: pointer;
     position: relative;
     transition: all 0.2s ease;
+    flex-shrink: 0;
   }
 
   .form-check-input:checked {
-    background-color: var(--primary);
-    border-color: var(--primary);
+    background-color: #6c63ff;
+    border-color: #6c63ff;
   }
 
   .form-check-input:checked::after {
@@ -146,43 +243,68 @@
   }
 
   .btn-submit {
-    background-color: var(--primary);
+    background: linear-gradient(135deg, #6c63ff, #8b85ff);
     color: white;
     border: none;
     border-radius: 12px;
-    padding: 1.25rem;
+    padding: 1.25rem 2rem;
     font-size: 1.1rem;
     font-weight: 600;
     width: 100%;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    margin-top: 1.5rem;
+    margin-top: 2rem;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 0.75rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
   }
 
   .btn-submit:hover {
-    background-color: #5a52e0;
-    transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(108, 99, 255, 0.2);
+    background: linear-gradient(135deg, #564fd1, #6c63ff);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(108, 99, 255, 0.25);
+  }
+
+  .btn-submit:active {
+    transform: translateY(0);
+  }
+
+  .btn-submit i {
+    transition: transform 0.3s ease;
+  }
+
+  .btn-submit:hover i {
+    transform: scale(1.1);
   }
 
   .alert-danger {
     background-color: #fff5f5;
-    border: 2px solid var(--error);
-    color: #e53e3e;
+    border: 2px solid #dc3545;
+    color: #dc3545;
     padding: 1.5rem;
     border-radius: 12px;
     margin-bottom: 2.5rem;
     grid-column: span 2;
+    animation: shake 0.5s ease-in-out;
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-5px); }
+    40%, 80% { transform: translateX(5px); }
   }
 
   .alert-danger strong {
     display: block;
     margin-bottom: 0.75rem;
     font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
 
   .alert-danger ul {
@@ -193,19 +315,111 @@
 
   .input-hint {
     font-size: 0.85rem;
-    color: var(--text-light);
+    color: #718096;
     margin-top: 0.5rem;
     display: block;
+    line-height: 1.4;
   }
 
+  .price-container {
+    position: relative;
+  }
+
+  .price-container::before {
+    content: "$";
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #718096;
+    font-weight: 600;
+    z-index: 1;
+  }
+
+  .price-input {
+    padding-left: 2rem !important;
+  }
+
+  .discount-badge {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #28a745;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: none;
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  .character-counter {
+    font-size: 0.8rem;
+    color: #718096;
+    text-align: right;
+    margin-top: 0.25rem;
+    transition: color 0.3s ease;
+  }
+
+  .character-counter.warning {
+    color: #ffc107;
+  }
+
+  .character-counter.error {
+    color: #dc3545;
+  }
+
+  .tag-input-container {
+    position: relative;
+  }
+
+  .tag-hint {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #8b85ff;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  #id_tag:focus + .tag-hint {
+    opacity: 1;
+  }
+
+  /* Loading spinner */
+  .spinner {
+    display: none;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1s ease-in-out infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* Responsive adjustments */
   @media (max-width: 768px) {
     .add-product-container {
-      padding: 1.75rem;
+      padding: 2rem 1.5rem;
       margin: 1.5rem;
+      border-radius: 16px;
     }
 
     .form-grid {
       grid-template-columns: 1fr;
+      gap: 1.5rem;
     }
 
     .form-group.full-width {
@@ -214,6 +428,41 @@
 
     .alert-danger {
       grid-column: span 1;
+    }
+
+    .form-header h2 {
+      font-size: 1.8rem;
+    }
+
+    .form-header p {
+      font-size: 1rem;
+    }
+
+    .file-upload-label {
+      padding: 2rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .add-product-container {
+      padding: 1.75rem 1.25rem;
+      margin: 1rem;
+    }
+
+    .form-header h2 {
+      font-size: 1.6rem;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    textarea,
+    select {
+      padding: 0.9rem 1.25rem;
+    }
+
+    .btn-submit {
+      padding: 1.1rem;
+      font-size: 1rem;
     }
   }
 </style>
@@ -226,7 +475,7 @@
 
   {% if form.errors %}
     <div class="alert-danger">
-      <strong>⚠️ Submission Error</strong>
+      <strong><i class="fas fa-exclamation-circle"></i> Submission Error</strong>
       <ul>
         {% for field, error in form.errors.items %}
           <li><strong>{{ field|title }}:</strong> {{ error|striptags }}</li>
@@ -235,12 +484,12 @@
     </div>
   {% endif %}
 
-  <form method="POST" enctype="multipart/form-data" class="product-form">
+  <form method="POST" enctype="multipart/form-data" class="product-form" id="productForm">
     {% csrf_token %}
 
     <div class="form-grid">
       <div class="form-group">
-        <label for="id_name">Product Name</label>
+        <label for="id_name" class="required">Product Name</label>
         <div class="input-field">
           {{ form.name }}
         </div>
@@ -256,24 +505,35 @@
       </div>
 
       <div class="form-group full-width">
-        <label for="id_category">Product Category</label>
+        <label for="id_category" class="required">Product Category</label>
         {{ form.category }}
       </div>
 
       <div class="form-group full-width">
-        <label for="id_product_image">Product Image</label>
-        {{ form.product_image }}
-        <span class="input-hint">Recommended size: 800x800px, JPG/PNG format</span>
+        <label for="id_product_image" class="required">Product Image</label>
+        <div class="file-upload-wrapper">
+          <label for="id_product_image" class="file-upload-label">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <span>Click to upload product image</span>
+            <div class="file-name" id="fileName">No file selected</div>
+          </label>
+          {{ form.product_image }}
+          <div class="preview-container" id="previewContainer">
+            <img src="#" alt="Preview" class="image-preview" id="imagePreview">
+          </div>
+        </div>
+        <span class="input-hint">Recommended size: 800x800px, JPG/PNG format (max 5MB)</span>
       </div>
 
       <div class="form-group full-width">
-        <label for="id_small_description">Short Description</label>
+        <label for="id_small_description" class="required">Short Description</label>
         {{ form.small_description }}
+        <div class="character-counter" id="smallDescCounter">0/150</div>
         <span class="input-hint">Appears in product cards (max 150 characters)</span>
       </div>
 
       <div class="form-group">
-        <label for="id_quantity">Stock Quantity</label>
+        <label for="id_quantity" class="required">Stock Quantity</label>
         <div class="input-field">
           {{ form.quantity }}
         </div>
@@ -281,28 +541,30 @@
       
       <div class="form-group">
         <label for="id_tag">Product Tags</label>
-        <div class="input-field">
+        <div class="input-field tag-input-container">
           {{ form.tag }}
+          <span class="tag-hint">Press Enter to add</span>
         </div>
-        <span class="input-hint">Separate tags with commas</span>
+        <span class="input-hint">Separate tags with commas (e.g., "electronics, gadget")</span>
       </div>
 
       <div class="form-group full-width">
-        <label for="id_description">Full Description</label>
+        <label for="id_description" class="required">Full Description</label>
         {{ form.description }}
         <span class="input-hint">Tell customers about features, benefits, and specifications</span>
       </div>
 
       <div class="form-group">
-        <label for="id_original_price">Original Price ($)</label>
-        <div class="input-field">
+        <label for="id_original_price" class="required">Original Price</label>
+        <div class="input-field price-container">
           {{ form.original_price }}
+          <span class="discount-badge" id="discountBadge">0% OFF</span>
         </div>
       </div>
       
       <div class="form-group">
-        <label for="id_selling_price">Selling Price ($)</label>
-        <div class="input-field">
+        <label for="id_selling_price" class="required">Selling Price</label>
+        <div class="input-field price-container">
           {{ form.selling_price }}
         </div>
       </div>
@@ -319,6 +581,7 @@
         <div class="input-field">
           {{ form.meta_title }}
         </div>
+        <div class="character-counter" id="metaTitleCounter">0/60</div>
         <span class="input-hint">Optimize for search engines (50-60 characters)</span>
       </div>
 
@@ -335,26 +598,24 @@
         <div class="input-field">
           {{ form.meta_description }}
         </div>
+        <div class="character-counter" id="metaDescCounter">0/160</div>
         <span class="input-hint">Brief summary for search results (150-160 chars)</span>
       </div>
     </div>
 
-    <button type="submit" class="btn-submit">
-      <i class="fas fa-plus-circle"></i> Publish Product
+    <button type="submit" class="btn-submit" id="submitButton">
+      <span class="spinner" id="submitSpinner"></span>
+      <span id="submitText"><i class="fas fa-plus-circle"></i> Add Product</span>
     </button>
   </form>
 </div>
 
-<!-- Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
-<!-- Enhanced Slug Generation -->
 <script>
   document.addEventListener('DOMContentLoaded', function() {
+    // Slug generation
     const nameField = document.getElementById('id_name');
     const slugField = document.getElementById('id_slug');
     
-    // Auto-generate slug when name changes
     nameField.addEventListener('input', function() {
       if (!slugField.value || slugField.dataset.manuallyEdited !== 'true') {
         slugField.value = this.value
@@ -365,22 +626,111 @@
       }
     });
     
-    // Mark slug as manually edited when user changes it
     slugField.addEventListener('change', function() {
       this.dataset.manuallyEdited = 'true';
     });
+
+    // Image upload preview
+    const fileInput = document.getElementById('id_product_image');
+    const fileNameElement = document.getElementById('fileName');
+    const previewContainer = document.getElementById('previewContainer');
+    const imagePreview = document.getElementById('imagePreview');
     
-    // Improve file input display
-    const fileInput = document.querySelector('input[type="file"]');
-    if (fileInput) {
-      fileInput.addEventListener('change', function(e) {
-        const fileName = e.target.files[0]?.name || 'No file selected';
-        const label = this.nextElementSibling;
-        if (label && label.classList.contains('file-label')) {
-          label.textContent = fileName;
+    fileInput.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        fileNameElement.textContent = file.name;
+        
+        // Show preview
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          imagePreview.src = event.target.result;
+          previewContainer.style.display = 'block';
         }
-      });
+        reader.readAsDataURL(file);
+      } else {
+        fileNameElement.textContent = 'No file selected';
+        previewContainer.style.display = 'none';
+      }
+    });
+
+    // Character counters
+    const smallDescField = document.getElementById('id_small_description');
+    const smallDescCounter = document.getElementById('smallDescCounter');
+    const metaTitleField = document.getElementById('id_meta_title');
+    const metaTitleCounter = document.getElementById('metaTitleCounter');
+    const metaDescField = document.getElementById('id_meta_description');
+    const metaDescCounter = document.getElementById('metaDescCounter');
+    
+    function updateCounter(field, counter, maxLength) {
+      const length = field.value.length;
+      counter.textContent = `${length}/${maxLength}`;
+      
+      // Add warning/error classes
+      counter.classList.remove('warning', 'error');
+      if (length > maxLength * 0.9) {
+        counter.classList.add('warning');
+      }
+      if (length > maxLength) {
+        counter.classList.add('error');
+      }
     }
+    
+    smallDescField.addEventListener('input', () => updateCounter(smallDescField, smallDescCounter, 150));
+    metaTitleField.addEventListener('input', () => updateCounter(metaTitleField, metaTitleCounter, 60));
+    metaDescField.addEventListener('input', () => updateCounter(metaDescField, metaDescCounter, 160));
+    
+    // Initialize counters
+    updateCounter(smallDescField, smallDescCounter, 150);
+    updateCounter(metaTitleField, metaTitleCounter, 60);
+    updateCounter(metaDescField, metaDescCounter, 160);
+
+    // Discount calculator
+    const originalPriceField = document.getElementById('id_original_price');
+    const sellingPriceField = document.getElementById('id_selling_price');
+    const discountBadge = document.getElementById('discountBadge');
+    
+    function calculateDiscount() {
+      const original = parseFloat(originalPriceField.value) || 0;
+      const selling = parseFloat(sellingPriceField.value) || 0;
+      
+      if (original > 0 && selling > 0 && selling < original) {
+        const discount = Math.round(((original - selling) / original) * 100);
+        discountBadge.textContent = `${discount}% OFF`;
+        discountBadge.style.display = 'block';
+      } else {
+        discountBadge.style.display = 'none';
+      }
+    }
+    
+    originalPriceField.addEventListener('input', calculateDiscount);
+    sellingPriceField.addEventListener('input', calculateDiscount);
+
+    // Form submission loading state
+    const productForm = document.getElementById('productForm');
+    const submitButton = document.getElementById('submitButton');
+    const submitText = document.getElementById('submitText');
+    const submitSpinner = document.getElementById('submitSpinner');
+    
+    productForm.addEventListener('submit', function() {
+      submitText.textContent = 'Processing...';
+      submitSpinner.style.display = 'block';
+      submitButton.disabled = true;
+    });
+
+    // Price input formatting
+    [originalPriceField, sellingPriceField].forEach(field => {
+      field.classList.add('price-input');
+    });
+
+    // Tag input hints
+    const tagInput = document.getElementById('id_tag');
+    tagInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        // You could add code here to process tags as they're entered
+      }
+    });
   });
 </script>
 {% endblock content %}

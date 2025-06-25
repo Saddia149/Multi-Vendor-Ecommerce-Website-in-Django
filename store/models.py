@@ -10,20 +10,20 @@ class CustomUser(AbstractUser):
     ROLE_CHOICES = [
         ('buyer', 'Buyer'),
         ('seller', 'Seller'),
-        ('admin', 'Admin'),  # ✅ Admin role
+        ('admin', 'Admin'),
     ]
     
     role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='buyer')
-    is_staff = models.BooleanField(default=False)  # ✅ Admins will be staff
-    is_superuser = models.BooleanField(default=False)  # ✅ Restrict admin access
+    is_seller_approved = models.BooleanField(default=False)  # ✅ Add this line
+    is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
 
     def has_module_perms(self, app_label):
-        """ Prevent non-admin users from accessing Django admin panel """
         return self.is_superuser
 
     def has_perm(self, perm, obj=None):
-        """ Restrict admin panel access only to superusers """
         return self.is_superuser
+
 
 # Function for Dynamic File Path
 def get_file_path(request, filename):

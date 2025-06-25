@@ -2,109 +2,164 @@
 
 {% block content %}
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow-sm mt-5 border-0">
-                <div class="card-body p-4">
-                    <form action="" method="post">
-                        {% csrf_token %}
-                        <div class="text-center mb-4">
-                            <h4 class="text-success fw-bold">Create Your Account</h4>
-                            <p class="text-muted">Join our shop today!</p>
-                        </div>
+  <div class="row justify-content-center">
+    <div class="col-md-7 col-lg-6">
+      <div class="card form-card mt-5 border-0 shadow-lg">
+        <div class="card-body p-5">
+          <form method="post" novalidate>
+            {% csrf_token %}
 
-                        <!-- Username -->
-                        <div class="form-group mb-3">
-                            <label class="form-label"><i class="fas fa-user me-2 text-secondary"></i>Username</label>
-                            {{ form.username }}
-                            {% if form.errors.username %}
-                            <div class="text-danger small mt-1">{{ form.errors.username }}</div>
-                            {% endif %}
-                        </div>
-
-                        <!-- Email -->
-                        <div class="form-group mb-3">
-                            <label class="form-label"><i class="fas fa-envelope me-2 text-secondary"></i>Email</label>
-                            {{ form.email }}
-                            {% if form.errors.email %}
-                            <div class="text-danger small mt-1">{{ form.errors.email }}</div>
-                            {% endif %}
-                        </div>
-
-                        <!-- Password -->
-                        <div class="form-group mb-3">
-                            <label class="form-label"><i class="fas fa-lock me-2 text-secondary"></i>Password</label>
-                            {{ form.password1 }}
-                            {% if form.errors.password1 %}
-                            <div class="text-danger small mt-1">{{ form.errors.password1 }}</div>
-                            {% endif %}
-                        </div>
-
-                        <!-- Confirm Password -->
-                        <div class="form-group mb-3">
-                            <label class="form-label"><i class="fas fa-check-circle me-2 text-secondary"></i>Confirm Password</label>
-                            {{ form.password2 }}
-                            {% if form.errors.password2 %}
-                            <div class="text-danger small mt-1">{{ form.errors.password2 }}</div>
-                            {% endif %}
-                        </div>
-
-                        <!-- Role Selection -->
-                        <div class="form-group mb-4">
-                            <label class="form-label"><i class="fas fa-user-tag me-2 text-secondary"></i>Register as</label>
-                            {{ form.role }}
-                        </div>
-
-                        <button type="submit" class="btn btn-success w-100 py-2">
-                            Register <i class="fas fa-arrow-right ms-2"></i>
-                        </button>
-                        
-                        <div class="text-center mt-3">
-                            <small class="text-muted">Already have an account? 
-                                <a href="{% url 'loginpage' %}" class="text-success">Login here</a>
-                            </small>
-                        </div>
-                    </form>
-                </div>
+            <div class="text-center mb-4">
+              <h2 class="form-title">Create Your Account</h2>
+              <p class="form-subtitle">Join our shop today and explore amazing deals!</p>
             </div>
+
+            {% for field in form %}
+              <div class="mb-4">
+                <label class="form-label fw-semibold text-dark">
+                  {% if field.name == "username" %}
+                    <i class="fas fa-user me-2 text-primary"></i>Username
+                  {% elif field.name == "email" %}
+                    <i class="fas fa-envelope me-2 text-primary"></i>Email
+                  {% elif field.name == "password1" %}
+                    <i class="fas fa-lock me-2 text-primary"></i>Password
+                  {% elif field.name == "password2" %}
+                    <i class="fas fa-check-circle me-2 text-primary"></i>Confirm Password
+                  {% elif field.name == "role" %}
+                    <i class="fas fa-user-tag me-2 text-primary"></i>Register as
+                  {% endif %}
+                </label>
+                {{ field }}
+                {% if field.errors %}
+                  <div class="text-danger small mt-1">{{ field.errors.0 }}</div>
+                {% endif %}
+              </div>
+            {% endfor %}
+
+            <button type="submit" class="btn-submit w-100">
+              <i class="fas fa-user-plus me-2"></i>Register
+            </button>
+
+            <div class="text-center mt-3">
+              <small class="text-muted">Already have an account? 
+                <a href="{% url 'loginpage' %}" class="text-link">Login here</a>
+              </small>
+            </div>
+          </form>
         </div>
+      </div>
     </div>
+  </div>
 </div>
 
 <style>
-    .card {
-        border-radius: 15px;
-        overflow: hidden;
+  :root {
+    --primary: #4F46E5;
+    --primary-light: #A5B4FC;
+    --bg: #f8f9fe;
+    --text-dark: #1f2937;
+    --text-muted: #6b7280;
+    --border: #e5e7eb;
+    --radius: 12px;
+    --shadow: 0 8px 24px rgba(79, 70, 229, 0.1);
+  }
+
+  body {
+    background: var(--bg);
+  }
+
+  .form-card {
+    border-radius: var(--radius);
+    background: #ffffff;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .form-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(79, 70, 229, 0.15);
+  }
+
+  .form-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--primary);
+  }
+
+  .form-subtitle {
+    font-size: 1rem;
+    color: var(--text-muted);
+  }
+
+  .form-label {
+    font-size: 0.95rem;
+    margin-bottom: 0.4rem;
+  }
+
+  input,
+  select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    background-color: #f9fafb;
+    transition: border 0.3s, box-shadow 0.3s;
+  }
+
+  input:focus,
+  select:focus {
+    outline: none;
+    border-color: var(--primary);
+    background-color: #fff;
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15);
+  }
+
+  .btn-submit {
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: white;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: var(--radius);
+    border: none;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .btn-submit:hover {
+    background: linear-gradient(135deg, #3730A3, var(--primary));
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(79, 70, 229, 0.25);
+  }
+
+  .text-link {
+    color: var(--primary);
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .text-link:hover {
+    color: #3730A3;
+    text-decoration: underline;
+  }
+
+  @media (max-width: 576px) {
+    .form-title {
+      font-size: 1.5rem;
     }
-    
-    .form-control {
-        border: 2px solid #e0e0e0;
-        padding: 0.6rem 1rem;
-        border-radius: 8px;
+
+    .form-subtitle {
+      font-size: 0.9rem;
     }
-    
-    .form-control:focus {
-        border-color: var(--primary);
-        box-shadow: 0 0 0 0.25rem rgba(76, 175, 80, 0.25);
+
+    .btn-submit {
+      font-size: 0.95rem;
+      padding: 0.65rem 1.2rem;
     }
-    
-    select.form-control {
-        appearance: none;
-        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23333' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
-        background-repeat: no-repeat;
-        background-position: right 0.75rem center;
-        background-size: 16px 12px;
-    }
-    
-    .btn-success {
-        background-color: var(--primary);
-        border: none;
-        transition: all 0.3s;
-    }
-    
-    .btn-success:hover {
-        background-color: #3e8e41;
-        transform: translateY(-2px);
-    }
+  }
 </style>
 {% endblock content %}

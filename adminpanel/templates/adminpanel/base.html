@@ -1,0 +1,23 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>{% block title %}My-Shop Admin Panel{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'adminpanel/css/admin-style.css' %}">
+  <script src="https://kit.fontawesome.com/a81368914c.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="container">
+    {% include 'adminpanel/sidebar.html' %}
+    <main class="main-content">
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+
+  <script src="{% static 'adminpanel/js/admin-script.js' %}"></script>
+</body>
+</html>

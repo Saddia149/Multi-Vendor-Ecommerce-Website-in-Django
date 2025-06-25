@@ -1,0 +1,146 @@
+{% extends 'adminpanel/base.html' %}
+
+{% block content %}
+<style>
+  .profile-container {
+    max-width: 600px;
+    margin: 2rem auto;
+    background: #ffffff;
+    padding: 2.5rem;
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  .profile-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    position: relative;
+  }
+
+  .profile-title {
+    color: #5f4b8b;
+    font-weight: 700;
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .profile-subtitle {
+    color: #6b7280;
+    font-size: 0.95rem;
+  }
+
+  .profile-avatar {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1.5rem;
+    background-color: #a678e2;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 600;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .form-label {
+    display: block;
+    font-weight: 500;
+    color: #4b5563;
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    background-color: #f9fafb;
+  }
+
+  .form-control:focus {
+    border-color: #a678e2;
+    box-shadow: 0 0 0 3px rgba(166, 120, 226, 0.15);
+    background-color: white;
+    outline: none;
+  }
+
+  .btn-save {
+    width: 100%;
+    padding: 0.85rem;
+    background-color: #a678e2;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 1rem;
+  }
+
+  .btn-save:hover {
+    background-color: #9261c8;
+    transform: translateY(-1px);
+  }
+
+  .btn-save:active {
+    transform: translateY(0);
+  }
+
+  .input-hint {
+    font-size: 0.85rem;
+    color: #6b7280;
+    margin-top: 0.5rem;
+    display: block;
+  }
+</style>
+
+<div class="profile-container">
+  <div class="profile-header">
+    <div class="profile-avatar">
+      {{ request.user.username|first|upper }}
+    </div>
+    <h1 class="profile-title">Admin Profile</h1>
+    <p class="profile-subtitle">Update your account information</p>
+  </div>
+
+  <form method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="username" class="form-label">Username</label>
+      <input type="text" class="form-control" id="username" name="username" value="{{ request.user.username }}" required>
+      <span class="input-hint">Your unique identifier in the system</span>
+    </div>
+    
+    <div class="form-group">
+      <label for="email" class="form-label">Email Address</label>
+      <input type="email" class="form-control" id="email" name="email" value="{{ request.user.email }}" required>
+      <span class="input-hint">Important for notifications and account recovery</span>
+    </div>
+
+    <button type="submit" class="btn-save">
+      <i class="fas fa-save" style="margin-right: 8px;"></i>
+      Save Changes
+    </button>
+  </form>
+</div>
+
+<script>
+  // Add Font Awesome if not already loaded
+  if (!document.querySelector('link[href*="font-awesome"]')) {
+    const fa = document.createElement('link');
+    fa.rel = 'stylesheet';
+    fa.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css';
+    document.head.appendChild(fa);
+  }
+</script>
+{% endblock %}

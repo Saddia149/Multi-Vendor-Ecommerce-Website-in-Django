@@ -1,0 +1,251 @@
+{% extends 'adminpanel/base.html' %}
+
+{% block content %}
+<style>
+  /* Global styles */
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: #f8fafc;
+  }
+  #dashboard {
+    padding: 2rem;
+    color: #1e293b;
+  }
+  .header h2 {
+    font-size: 1.8rem;
+    color: #4f46e5;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  .header p {
+    color: #64748b;
+    margin-bottom: 2rem;
+    font-size: 0.95rem;
+  }
+
+  /* Grid cards */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+  .stat-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 4px 6px rgba(0,0,0,0.02);
+    transition: all 0.3s ease;
+    border: 1px solid #e2e8f0;
+    position: relative;
+    overflow: hidden;
+  }
+  .stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05), 0 4px 6px -2px rgba(0,0,0,0.03);
+  }
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+  }
+  .stat-card.blue::before { background-color: #3b82f6; }
+  .stat-card.purple::before { background-color: #8b5cf6; }
+  .stat-card.green::before { background-color: #10b981; }
+  .stat-card.orange::before { background-color: #f59e0b; }
+
+  .stat-icon {
+    font-size: 2.2rem;
+    margin-bottom: 0.75rem;
+    opacity: 0.9;
+  }
+  .stat-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 0.25rem;
+  }
+  .stat-label {
+    font-size: 0.9rem;
+    color: #64748b;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  /* Table section */
+  .content-section {
+    background: #fff;
+    padding: 1.75rem;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 4px 6px rgba(0,0,0,0.02);
+    margin-top: 2rem;
+    border: 1px solid #e2e8f0;
+  }
+  .section-header {
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .section-title {
+    color: #4f46e5;
+    font-size: 1.3rem;
+    font-weight: 600;
+  }
+  .section-actions {
+    display: flex;
+    gap: 0.75rem;
+  }
+  .btn {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .btn-primary {
+    background-color: #4f46e5;
+    color: white;
+    border: none;
+  }
+  .btn-primary:hover {
+    background-color: #4338ca;
+  }
+  .btn-outline {
+    background-color: transparent;
+    border: 1px solid #cbd5e1;
+    color: #64748b;
+  }
+  .btn-outline:hover {
+    background-color: #f8fafc;
+    border-color: #94a3b8;
+  }
+
+  table.table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 1rem;
+    font-size: 0.95rem;
+  }
+  table.table th, table.table td {
+    padding: 1rem 1.25rem;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  table.table th {
+    background: #f1f5f9;
+    color: #475569;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+  }
+  table.table tr:last-child td {
+    border-bottom: none;
+  }
+  table.table tbody tr {
+    transition: background-color 0.2s ease;
+  }
+  table.table tbody tr:hover {
+    background-color: #f8fafc;
+  }
+  .status-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+  .badge-active {
+    background-color: #dcfce7;
+    color: #166534;
+  }
+  .badge-pending {
+    background-color: #fef9c3;
+    color: #854d0e;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .stats-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    #dashboard {
+      padding: 1.5rem;
+    }
+  }
+  @media (max-width: 480px) {
+    .stats-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<section id="dashboard" class="content-section active">
+  <div class="header">
+    <h2>Welcome back, {{ request.user.username }} 👋</h2>
+    <p>Here's what's happening with your store today.</p>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card blue">
+      <div class="stat-icon">👥</div>
+      <div class="stat-value">{{ total_buyers }}</div>
+      <div class="stat-label">Total Customers</div>
+    </div>
+    <div class="stat-card purple">
+      <div class="stat-icon">🛒</div>
+      <div class="stat-value">{{ total_orders }}</div>
+      <div class="stat-label">Total Orders</div>
+    </div>
+    <div class="stat-card green">
+      <div class="stat-icon">📦</div>
+      <div class="stat-value">{{ total_products }}</div>
+      <div class="stat-label">Total Products</div>
+    </div>
+    <div class="stat-card orange">
+      <div class="stat-icon">🧑‍💼</div>
+      <div class="stat-value">{{ total_sellers }}</div>
+      <div class="stat-label">Active Sellers</div>
+    </div>
+  </div>
+
+  <div class="content-section">
+    <div class="section-header">
+      <h3 class="section-title">Sellers Overview</h3>
+    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Seller</th>
+          <th>Email</th>
+          <th>Products</th>
+          <th>Orders</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for s in seller_stats %}
+        <tr>
+          <td>{{ s.seller.username }}</td>
+          <td>{{ s.seller.email }}</td>
+          <td>{{ s.product_count }}</td>
+          <td>{{ s.order_count }}</td>
+            <td>
+    <a href="{% url 'seller_detail' s.seller.id %}" class="btn btn-outline btn-sm">
+      View Details
+    </a>
+  </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

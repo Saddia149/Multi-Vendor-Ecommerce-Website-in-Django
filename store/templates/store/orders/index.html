@@ -4,53 +4,111 @@
 
 <style>
   :root {
-    --primary: #6c63ff;
-    --primary-light: #8b85ff;
-    --secondary-bg: #f9f9fb;
-    --text-dark: #2d3748;
-    --text-medium: #4a5568;
-    --text-light: #718096;
-    --accent: #ff6b6b;
-    --shadow-sm: 0 2px 6px rgba(108, 99, 255, 0.15);
-    --shadow-md: 0 6px 20px rgba(108, 99, 255, 0.2);
+    --primary: #4F46E5;
+    --primary-light: #818CF8;
+    --primary-dark: #3730A3;
+    --text-dark: #1F2937;
+    --text-medium: #4B5563;
+    --text-light: #6B7280;
+    --accent: #EC4899;
+    --light-bg: #F9FAFB;
+    --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
     --border-radius: 12px;
     --transition: all 0.3s ease;
   }
 
-  /* Breadcrumb container */
-  .breadcrumb-container {
-    background: var(--primary);
-    padding: 1rem 0.5rem;
-    border-radius: var(--border-radius);
+  .orders-header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: white;
+    padding: 3rem 0;
     margin-bottom: 2rem;
-    box-shadow: var(--shadow-md);
-    width: 100vw;
-    margin-left: calc(-1 * ((100vw - 100%) / 2));
-    padding-left: max(1rem, calc((100vw - 1140px) / 2));
-    padding-right: max(1rem, calc((100vw - 1140px) / 2));
+    text-align: center;
+    position: relative;
+    overflow: hidden;
   }
-  .breadcrumb-container a {
-    color: #fff;
-    font-weight: 600;
+
+  .orders-header::before {
+    content: "";
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 200px;
+    height: 200px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+  }
+
+  .orders-header::after {
+    content: "";
+    position: absolute;
+    bottom: -80px;
+    left: -30px;
+    width: 150px;
+    height: 150px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 50%;
+  }
+
+  .orders-header h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .orders-header p {
+    position: relative;
+    z-index: 1;
+    opacity: 0.9;
+    font-size: 1.1rem;
+  }
+
+  .breadcrumb {
+    background-color: var(--light-bg);
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    margin: 0 auto 2rem;
+    display: inline-flex;
+    max-width: 1140px;
+    width: 100%;
+    box-shadow: var(--card-shadow);
+  }
+
+  .breadcrumb a {
+    color: var(--text-medium);
+    font-weight: 500;
     text-decoration: none;
-    margin-right: 0.5rem;
-    transition: var(--transition);
+    transition: color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
   }
-  .breadcrumb-container a:hover {
-    text-decoration: underline;
-    color: var(--accent);
+
+  .breadcrumb a:hover {
+    color: var(--primary);
   }
-  .breadcrumb-container span.separator {
-    color: rgba(255, 255, 255, 0.7);
-    margin-right: 0.5rem;
+
+  .breadcrumb span {
+    color: var(--text-light);
+    margin: 0 0.5rem;
+    display: flex;
+    align-items: center;
   }
 
   /* Card style */
   .orders-card {
-    background: var(--secondary-bg);
+    background: white;
     border-radius: var(--border-radius);
-    box-shadow: var(--shadow-sm);
-    padding: 1.5rem;
+    box-shadow: var(--card-shadow);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    transition: transform 0.3s ease;
+  }
+
+  .orders-card:hover {
+    transform: translateY(-3px);
   }
 
   .orders-card-header {
@@ -79,12 +137,14 @@
 
   table.orders-table tbody tr {
     background: #fff;
-    box-shadow: var(--shadow-sm);
+    box-shadow: var(--card-shadow);
     border-radius: var(--border-radius);
     transition: var(--transition);
   }
+  
   table.orders-table tbody tr:hover {
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--card-shadow-hover);
+    transform: translateY(-2px);
   }
 
   table.orders-table tbody tr td {
@@ -99,47 +159,133 @@
     background: var(--primary);
     border: none;
     color: white;
-    padding: 0.4rem 1rem;
-    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
     font-weight: 600;
     font-size: 0.9rem;
-    box-shadow: var(--shadow-sm);
     cursor: pointer;
     transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
   }
+  
   .btn-view:hover {
-    background: var(--primary-light);
-    box-shadow: var(--shadow-md);
+    background: var(--primary-dark);
+    box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
+  }
+
+  /* Status badges */
+  .status-badge {
+    display: inline-block;
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+  
+  .status-completed {
+    background-color: #D1FAE5;
+    color: #065F46;
+  }
+  
+  .status-pending {
+    background-color: #FEF3C7;
+    color: #92400E;
+  }
+  
+  .status-cancelled {
+    background-color: #FEE2E2;
+    color: #991B1B;
+  }
+  
+  .status-processing {
+    background-color: #DBEAFE;
+    color: #1E40AF;
   }
 
   /* Empty state */
   .empty-orders {
     text-align: center;
+    padding: 3rem;
+  }
+
+  .empty-orders-icon {
+    font-size: 3rem;
+    color: var(--text-light);
+    margin-bottom: 1rem;
+    opacity: 0.7;
+  }
+
+  .empty-orders h4 {
+    color: var(--text-dark);
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+  }
+
+  .empty-orders p {
     color: var(--text-medium);
-    padding: 3rem 1rem;
-    font-size: 1.2rem;
-    font-style: italic;
+    margin-bottom: 1.5rem;
+  }
+
+  .empty-orders-btn {
+    background: var(--primary);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .empty-orders-btn:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 768px) {
+    table.orders-table {
+      display: block;
+      overflow-x: auto;
+    }
+    
+    .orders-card {
+      padding: 1rem;
+    }
+    
+    .orders-card-header {
+      font-size: 1.5rem;
+    }
   }
 </style>
 
-<div class="container-fluid px-0">
-  <div class="breadcrumb-container d-flex align-items-center animate__animated animate__fadeInDown">
-    <a href="{% url 'home' %}">Home</a>
-    <span class="separator">/</span>
-    <a href="{% url 'myorders' %}">My Orders</a>
+<div class="orders-header">
+  <div class="container">
+    <h1>Your Orders</h1>
+    <p>Track and manage your purchases</p>
   </div>
 </div>
 
 <div class="container">
-  <div class="orders-card animate__animated animate__fadeInUp">
-    <div class="orders-card-header">My Orders</div>
+  <div class="breadcrumb">
+    <a href="{% url 'home' %}"><i class="fa fa-home"></i> Home</a>
+    <span>/</span>
+    <a href="{% url 'myorders' %}"><i class="fa fa-shopping-bag"></i> My Orders</a>
+  </div>
+
+  <div class="orders-card">
+    <div class="orders-card-header">Order History</div>
 
     {% if orders %}
     <table class="orders-table">
       <thead>
         <tr>
           <th>Order Date</th>
-          <th>Tracking Number</th>
+          <th>Order Number</th>
           <th>Total Price</th>
           <th>Status</th>
           <th>Action</th>
@@ -151,9 +297,13 @@
           <td>{{ item.created_at|date:"M d, Y" }}</td>
           <td>{{ item.tracking_no }}</td>
           <td>${{ item.total_price }}</td>
-          <td>{{ item.status|title }}</td>
           <td>
-            <a class="btn-view" href="{% url 'orderview' item.tracking_no %}">View</a>
+            <span class="status-badge status-{{ item.status|lower }}">{{ item.status|title }}</span>
+          </td>
+          <td>
+            <a class="btn-view" href="{% url 'orderview' item.tracking_no %}">
+              <i class="fa fa-eye"></i> View Details
+            </a>
           </td>
         </tr>
         {% endfor %}
@@ -161,12 +311,17 @@
     </table>
     {% else %}
     <div class="empty-orders">
-      You have no orders yet.
+      <div class="empty-orders-icon">
+        <i class="fa fa-box-open"></i>
+      </div>
+      <h4>You have no orders yet</h4>
+      <p>Start shopping to see your orders here</p>
+      <a href="{% url 'collections' %}" class="empty-orders-btn">
+        <i class="fa fa-store"></i> Browse Products
+      </a>
     </div>
     {% endif %}
   </div>
 </div>
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
 {% endblock content %}

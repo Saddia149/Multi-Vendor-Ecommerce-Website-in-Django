@@ -17,3 +17,10 @@
     margin-left: 10%;
 } */
 
+.bg-soft { background-color: #f9f9fb; }
+.animate-fade-in-up { animation: fadeInUp 1s ease both; }
+.delay-100 { animation-delay: 0.1s; }
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}

@@ -1,144 +1,36 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>E-Shop</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
     :root {
       --primary: #4CAF50;
       --secondary: #FF9800;
-      --accent: #FF5722;
-      --light: #F5F5F5;
       --dark: #333;
-      --success: #8BC34A;
-      --warning: #FFC107;
     }
-
-    .navbar {
-      background: white;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      padding: 0.8rem 1rem;
-    }
-
-    .navbar-brand {
-      font-weight: 800;
-      font-size: 2rem;
-      color: var(--primary);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .navbar-brand i {
-      color: var(--secondary);
-    }
-
-    .nav-link {
-      color: var(--dark) !important;
-      padding: 0.5rem 1rem !important;
-      border-radius: 8px;
-      transition: all 0.2s;
-    }
-
-    .nav-link:hover {
-      color: var(--primary) !important;
-      transform: translateY(-2px);
-    }
-
-    .nav-link i {
-      margin-right: 5px;
-      color: var(--secondary);
-    }
-
-    .search-bar {
-      flex-grow: 1;
-      max-width: 500px;
-      margin: 0 2rem;
-    }
-
-    .search-bar .form-control {
-      border: 2px solid #e0e0e0;
-      border-radius: 50px;
-      padding: 0.6rem 1.5rem;
-    }
-
-    .search-bar .form-control:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 0.25rem rgba(76, 175, 80, 0.25);
-    }
-
-    .search-bar .btn {
-      background: var(--primary);
-      color: white;
-      border-radius: 0 50px 50px 0 !important;
-      padding: 0 1.5rem;
-    }
-
-    .search-bar .btn:hover {
-      background: #3e8e41;
-    }
-
-    .user-avatar {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .dropdown-menu {
-      border: none;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-      border-radius: 12px;
-      padding: 0.5rem;
-    }
-
-    .dropdown-item {
-      padding: 0.5rem 1.5rem !important;
-      border-radius: 8px !important;
-      transition: all 0.2s;
-    }
-
-    .dropdown-item:hover {
-      background: rgba(76, 175, 80, 0.1) !important;
-      color: var(--primary) !important;
-    }
-
-    .dropdown-item i {
-      color: var(--secondary);
-    }
-
-    .btn-login {
-      background: transparent;
-      color: var(--primary) !important;
-      border: 2px solid var(--primary);
+    .navbar { background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    .navbar-brand { font-weight: 800; font-size: 1.8rem; color: var(--primary); }
+    .navbar-brand i { color: var(--secondary); margin-right: 5px; }
+    .nav-link { color: var(--dark) !important; padding: 0.5rem 1rem; border-radius: 8px; }
+    .nav-link:hover { color: var(--primary) !important; transform: translateY(-2px); }
+    .nav-link i { margin-right: 5px; color: var(--secondary); }
+    .btn-login, .btn-register {
       border-radius: 50px !important;
+      padding: 0.4rem 1rem;
+      margin-left: 0.5rem;
     }
-
-    .btn-login:hover {
-      background: rgba(76, 175, 80, 0.1);
-    }
-
-    .btn-register {
-      background: var(--primary);
-      color: white !important;
-      border-radius: 50px !important;
-    }
-
-    .btn-register:hover {
-      background: #3e8e41;
-      transform: translateY(-2px);
-    }
-
-    @media (max-width: 992px) {
-      .search-bar {
-        margin: 1rem 0;
-        max-width: 100%;
-        order: 3;
-        width: 100%;
-      }
-    }
+    .btn-login { border: 2px solid var(--primary); color: var(--primary) !important; }
+    .btn-register { background: var(--primary); color: white !important; }
+    .search-bar { flex-grow: 1; max-width: 500px; margin: 0 2rem; }
+    .search-bar .form-control { border-radius: 50px; padding: 0.5rem 1.5rem; }
+    .user-avatar { display: flex; align-items: center; gap: 0.5rem; }
+    .dropdown-menu { border-radius: 12px; }
+    .dropdown-item:hover { background-color: rgba(76,175,80,0.1); color: var(--primary); }
   </style>
 </head>
 <body>
@@ -149,8 +41,7 @@
       <i class="fas fa-store"></i> MYSHOP
     </a>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
     </button>
 
@@ -166,11 +57,19 @@
     {% endif %}
 
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto align-items-center gap-3">
+      <ul class="navbar-nav ms-auto">
         {% if request.user.is_authenticated %}
           {% if request.user.role == 'seller' %}
-            <li class="nav-item"><a class="nav-link" href="{% url 'seller_dashboard' %}"><i class="fas fa-chart-line"></i> Dashboard</a></li>
-            <li class="nav-item"><a class="nav-link" href="{% url 'add_product' %}"><i class="fas fa-plus-circle"></i> Add Product</a></li>
+            {% if not request.user.is_seller_approved %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'seller_home' %}"><i class="fas fa-home"></i> Home</a>
+              </li>
+            {% else %}
+              <li class="nav-item"><a class="nav-link" href="{% url 'seller_home' %}"><i class="fas fa-home"></i> Home</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'seller_dashboard' %}"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'add_product' %}"><i class="fas fa-plus-circle"></i> Add Product</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'seller_orders' %}"><i class="fas fa-truck"></i> Orders</a></li>
+            {% endif %}
           {% else %}
             <li class="nav-item"><a class="nav-link" href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a></li>
             <li class="nav-item"><a class="nav-link" href="{% url 'collections' %}"><i class="fas fa-th-large"></i> Collections</a></li>
@@ -182,26 +81,21 @@
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
               <div class="user-avatar">
                 <i class="fas fa-user"></i>
-                <span>{{ request.user }}</span>
+                <span>{{ request.user.username }}</span>
               </div>
             </a>
             <ul class="dropdown-menu">
+              {% if request.user.role == 'buyer' %}
               <li><a class="dropdown-item" href="{% url 'myorders' %}"><i class="fas fa-box-open"></i> My Orders</a></li>
               <li><hr class="dropdown-divider"></li>
+              {% endif %}
               <li><a class="dropdown-item" href="{% url 'logoutpage' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
           </li>
         {% else %}
-          <!-- ✅ Added Home Link for Not Logged In Users -->
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="btn btn-login px-3" href="{% url 'loginpage' %}"><i class="fas fa-sign-in-alt me-1"></i> Login</a>
-          </li>
-          <li class="nav-item">
-            <a class="btn btn-register px-3" href="{% url 'register' %}"><i class="fas fa-user-plus me-1"></i> Register</a>
-          </li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a></li>
+          <li class="nav-item"><a class="btn btn-login" href="{% url 'loginpage' %}"><i class="fas fa-sign-in-alt me-1"></i> Login</a></li>
+          <li class="nav-item"><a class="btn btn-register" href="{% url 'register' %}"><i class="fas fa-user-plus me-1"></i> Register</a></li>
         {% endif %}
       </ul>
     </div>
@@ -209,14 +103,5 @@
 </nav>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    const cartIcon = document.querySelector('.fa-shopping-cart');
-    if (cartIcon) {
-      cartIcon.style.animation = 'bounce 1s infinite alternate';
-    }
-  });
-</script>
-
 </body>
 </html>
