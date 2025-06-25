@@ -3,17 +3,17 @@ E-Shop is a full-featured e-commerce platform built with Django. It supports bot
 
  ## Table of Contents
  
- * 🔐 Authentication & Roles
+ * Authentication & Roles
  
- * 🧍 Buyer Features
+ *  Buyer Features
 
- * 🧑‍💼 Seller Features
+ *  Seller Features
 
- * 🛠️ Admin Panel
+ *  Admin Panel
 
- * 📄 Invoice System
+ *  Invoice System
 
- * 💬 Real-Time Communication
+ *  Real-Time Communication
 
  ## Authentication & Roles
  
@@ -27,61 +27,61 @@ E-Shop is a full-featured e-commerce platform built with Django. It supports bot
 
 ##  Buyer Features
 
-* 🛍️ Browse products by category
+*  Browse products by category
 
-* 🔍 Search and filter items
+*  Search and filter items
 
-* ❤️ Add to wishlist
+*  Add to wishlist
 
-* 🛒 Add to cart and manage it
+*  Add to cart and manage it
 
-* 💰 Checkout with COD, Razorpay, or PayPal
+*  Checkout with COD, Razorpay, or PayPal
 
-* 📦 Track order status
+*  Track order status
 
-* 📥 Download invoices as PDF
+*  Download invoices as PDF
 
-* 👀 View product details with seller info
+*  View product details with seller info
 
-* 💬 Chat with sellers via WhatsApp or Tawk.to
+*  Chat with sellers via WhatsApp or Tawk.to
 
 ##  Seller Features
 
-* 🏠 Seller dashboard after Admin approval
+*  Seller dashboard after Admin approval
 
-* ➕ Add products (name, price, image, etc.)
+*  Add products (name, price, image, etc.)
 
-* ✏️ Edit or delete their own products
+*  Edit or delete their own products
 
-* 📦 View orders for their products
+*  View orders for their products
 
-* 🔄 Update order status: Pending → Out for Delivery → Delivered
+*  Update order status: Pending → Out for Delivery → Delivered
 
-*📊 Optional analytics dashboard
+* Optional analytics dashboard
 
-* ⛔ Cannot access buyer features
+*  Cannot access buyer features
 
 ⚠️ Unapproved sellers see a limited dashboard with a pending approval notice.
 
 ## Admin Panel
 
-* ✅ Approve or reject seller registrations
+*  Approve or reject seller registrations
 
-* 👁️ View all buyers and sellers
+*  View all buyers and sellers
 
-* 📊 Platform stats: total products, orders, users
+*  Platform stats: total products, orders, users
 
-* 🔍 View seller details:
+*  View seller details:
 
-       * Product listings
+     * Product listings
 
-       * Order history
+     * Order history
 
-       * Buyers who ordered from them
+     * Buyers who ordered from them
 
-* 🗂️ Manage categories and products
+*  Manage categories and products
 
-* 🔐 Superuser-protected
+*  Superuser-protected
 
 ## Invoice System
 
@@ -94,20 +94,57 @@ E-Shop is a full-featured e-commerce platform built with Django. It supports bot
 * Embedded Tawk.to live chat widget
 
 ## ScreenShots
-### 
+### Home Page
+![Alt Text](imgs/127.0.0.1_8000_(1)-Copy.png)
+### Regiter Page
 ![Alt Text](imgs/127.0.0.1_8000_register_.png)
+### Seller Dashboard
 ![Alt Text](imgs/127.0.0.1_8000_seller-dashboard_.png)
-![Alt Text](imgs/127.0.0.1_8000_seller-home_(1).png)
+### Seller Home(Before Approval)
 ![Alt Text](imgs/127.0.0.1_8000_seller-home_.png)
+### Seller Home(After Approval)
+![Alt Text](imgs/127.0.0.1_8000_seller-home_(1).png)
+### Add Product for Seller
 ![Alt Text](imgs/127.0.0.1_8000_add-product_png)
+### Seller Orders
 ![Alt Text](imgs/127.0.0.1_8000_seller-orders_.png)
-![Alt Text](imgs/127.0.0.1_8000_ (1) - Copy.png)
+### Collection on Buyer Side
 ![Alt Text](imgs/127.0.0.1_8000_collections.png)
+### Buyer Ad-to-Cart
 ![Alt Text](imgs/127.0.0.1_8000_cart_.png)
+### Buyer Wishlist
 ![Alt Text](imgs/127.0.0.1_8000_wishlist.png)
+### Buyer Checkout
 ![Alt Text](imgs/127.0.0.1_8000_checkout.png)
+### AdminPanel Dashboard
 ![Alt Text](imgs/127.0.0.1_8000_adminpanel_dashboard_.png)
+### AdminPanel Approving Sellers
 ![Alt Text](imgs/127.0.0.1_8000_adminpanel_sellers_.png)
+
+Any many more.
+##  How to Install & Run the Project
+### Clone:
+       git clone https://github.com/Saddia149/Multi-Vendor-Ecommerce-Website-in-Django.git
+       cd Multi-Vendor-Ecommerce-Website-in-Django
+
+### Install Django and other dependencies:
+       pip install django
+       pip install django-jazzmin
+       pip install WeasyPrint
+
+### Migrate:
+       python manage.py migrate4
+
+### SuperUser:
+       python manage.py createsuperuser
+
+###  Access Admin Panel:
+       Visit: http://127.0.0.1:8000/admin
+
+### Run Server:
+       python manage.py runserver
+
+
 
 
 
